@@ -33,12 +33,21 @@
             </div>
             <div class="row justify-content-center">
                 <div class="col-md-8">
-                    <?php if (!$validation) { ?>
+                    <?php 
+                        // Si le formulaire n'est pas valide on reste dessus 
+                        if (!$validation) { 
+                    ?>
                         <form action="index.php" method="post">
                             <fieldset>
                                 <legend>Formulaire d'inscription</legend>
                                 <div class="form-group">
                                     <label for="lastName">Nom</label>
+                                    <?php 
+                                        // Pour chaque input : 
+                                        // - On test s'il y a message d'erreur pour son champ, si c'est le cas on insert la classe 'is-invalid' (border rouge) ...
+                                        // - On garde la value du POST dans le champs (il sera vide s'il est erroné (cf -> test))
+                                        // - On insert une classe text-danger (texte rouge) et  un message d'erreur si l'input possède un message d'erreur
+                                    ?>
                                     <input type="text" class="form-control <?= isset($arrayOfErrors['lastName']) ? 'is-invalid' : '' ?>" name="lastName" placeholder="Dupont" value="<?= $_POST['lastName'] ?? '' ?>">
                                     <span class="<?= isset($arrayOfErrors['lastName']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['lastName'] ?? '' ?></span>
                                 </div>
@@ -56,7 +65,11 @@
                                     <label for="countryOfBirth">Pays de naissance</label>
                                     <select class="form-control <?= isset($arrayOfErrors['countryOfBirth']) ? 'is-invalid' : '' ?>" name="countryOfBirth" id="countryOfBirth">
                                         <option disabled selected>Selectionnez un pays</option>
-                                        <?php foreach ($countryList as $country): ?>
+                                        <?php 
+                                            // Pour les menus déroulant on utilise le tableau de country-list-array.php (regroupant tout les pays) ...
+                                            // ... afin de créer dynamiquement une option pour chaque pays 
+                                            foreach ($countryList as $country): 
+                                        ?>
                                             <option value="<?= $country ?>" <?= (isset($_POST['countryOfBirth']) && $_POST['countryOfBirth'] == $country) ? 'selected' : '' ?>><?= $country ?></option>
                                         <?php endforeach ?>
                                     </select>
@@ -66,7 +79,11 @@
                                     <label for="nationality">Nationalité</label>
                                     <select class="form-control <?= isset($arrayOfErrors['nationality']) ? 'is-invalid' : '' ?>" name="nationality" id="nationality">
                                         <option disabled <?= (!isset($_POST['nationality']) || $_POST['nationality'] == '') ? 'selected' : '' ?>>Selectionnez un pays</option>
-                                        <?php foreach ($countryList as $country): ?>
+                                        <?php 
+                                            // Pour les menus déroulant on utilise le tableau de country-list-array.php (regroupant tout les pays) ...
+                                            // ... afin de créer dynamiquement une option pour chaque pays 
+                                            foreach ($countryList as $country): 
+                                        ?>
                                             <option value="<?= $country ?>" <?= (isset($_POST['nationality']) && $_POST['nationality'] == $country) ? 'selected' : '' ?>><?= $country ?></option>
                                         <?php endforeach ?>
                                     </select>
@@ -91,6 +108,9 @@
                                     <legend>Votre niveau d'étude</legend>
                                     <div class="form-check">
                                         <label class="form-check-label">
+                                            <?php 
+                                                // On garde la valeur du bouton radio grâce à sa valeur POST
+                                            ?>
                                             <input type="radio" class="form-check-input" name="degree" id="optionsRadios1" value="0" <?= ($_POST && $_POST['degree'] === '0') ? 'checked' : '' ?>>
                                             Pas de diplôme
                                         </label>
@@ -154,8 +174,9 @@
                                 <button type="submit" class="btn btn-outline-primary">Envoyer</button>
                             </fieldset>
                         </form>
-                        <div class="">
+                        <div>
                             <?php
+                        // Sinon le formualaire est correctement rempli et on affiche les informations 
                         } else {
                             // On récupère la date de naissance afin de l'afficher dans un format dd/mm/yyyy
                             $dateDDMMYYY = new DateTime($_POST['dateOfBirth']);

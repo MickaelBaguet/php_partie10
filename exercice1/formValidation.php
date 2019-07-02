@@ -11,14 +11,18 @@
     $addressPattern = '/^[a-zA-Z0-9][a-zA-Z'.$accentedCharacters.'0-9 \'-]*$/';
     $numberPattern = '/^[0-9]+$/';
     $degreePattern = '/^[0-1-2-3-4]{1}$/';
-    
+    // Tableau regroupant les différents phrases en fonction du diplôme
     $arrayDegree = ['Vous n\'avez pas de diplôme','Vous avez un Bac','Vous avez un Bac+2','Vous avez un Bac+3','Vous avez un Bac+5 ou supérieur'];
+    // Tableau (associatif) regroupant les messages d'errreurs
     $arrayOfErrors = [];
+    // Variable servant à savoir si le formulaire est correctement rempli ou non
     $validation = false;
     // !preg_match ( string $pattern , string $subject): sert à tester un pattern (regex) et une chaîne de caractères
-    // Si l'un des input ne correspond pas au pattern correspondant on reste dans le formulaire
+    // Si le formulairea été POST :
     if ($_POST) {
         // var_dump($_POST);
+        // On test chaque input en fonction de son pattern et s'il ne correspond pas on insert un message d'erreur ...
+        // ... et on réinitialise le POST afin de ne pas la garder dans le champ
         if (!preg_match($stringPattern, $_POST['lastName'])){
             $arrayOfErrors['lastName'] = 'Nom de famille invalide';
             $_POST['lastName'] = '';
@@ -63,6 +67,7 @@
             $arrayOfErrors['linkCodeAc'] = 'URL invalide';
             $_POST['linkCodeAc'] = '';
         }
+        // filter_input: sert à tester si un INPUT_POST est bien d'un type FILTER_VALIDATE
         if (!filter_input(INPUT_POST, 'numberBadge', FILTER_VALIDATE_INT)){
             $arrayOfErrors['numberBadge'] = 'Nombre de badge invalide !';
             $_POST['numberBadge'] = '';
@@ -79,7 +84,8 @@
         // var_dump($arrayOfErrors);
     }
     // var_dump($validation);
-    // S'il n'y a pas d'erreurs
+    // S'il n'y a pas d'erreurs et que le formulaire à bien été envoyé ...
+        // ... alors la variable servant de validation passe à true
     if (empty($arrayOfErrors) && $_POST){
         $validation = true;
     }
