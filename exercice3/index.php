@@ -9,7 +9,6 @@
           margin: 0;
           padding: 0;
       }
-      .error {color: #FF0000;}
       hr{
           border: 2px solid black;
       }
@@ -26,21 +25,25 @@
       </div>
     </div>
     <?php
+        // Liste de tableaux associatifs
         $portrait1 = array('name'=>'Victor', 'firstname'=>'Hugo', 'portrait'=>'http://upload.wikimedia.org/wikipedia/commons/5/5a/Bonnat_Hugo001z.jpg');
         $portrait2 = array('name'=>'Jean', 'firstname'=>'de La Fontaine', 'portrait'=>'http://upload.wikimedia.org/wikipedia/commons/e/e1/La_Fontaine_par_Rigaud.jpg');
         $portrait3 = array('name'=>'Pierre', 'firstname'=>'Corneille', 'portrait'=>'http://upload.wikimedia.org/wikipedia/commons/2/2a/Pierre_Corneille_2.jpg');
         $portrait4 = array('name'=>'Jean', 'firstname'=>'Racine', 'portrait'=>'http://upload.wikimedia.org/wikipedia/commons/d/d5/Jean_racine.jpg');
         $arrayOfPortrait = array($portrait1, $portrait2, $portrait3, $portrait4);
-        
+        // Fonction permettant d'afficher le tableau de tableau associatif
         function displayMultidimensionalArray($arrayOfPortrait){
-            foreach ($arrayOfPortrait as $i => $value) {
+            // On parcours tout les tableaux de arrayOfPortrait (avec '=> $value' afin d'éviter l'erreur: Illegal offset type)
+            foreach ($arrayOfPortrait as $portrait => $value) {
+                // Puis on affiche le contenu des tableaux associatifs :
     ?>
                 <div class="text-center">
-                    <p class="font-weight-bold">Portrait de <?= $arrayOfPortrait[$i]['name'] ?> <?= $arrayOfPortrait[$i]['firstname'] ?></p>
-                    <p><img src="<?= $arrayOfPortrait[$i]['portrait'] ?>" alt="Photo de <?= $arrayPortrait[$i]['name'] ?> <?= $arrayPortrait[$i]['firstname'] ?>" width="300"></p>
+                    <p class="font-weight-bold">Portrait de <?= $arrayOfPortrait[$portrait]['name'] ?> <?= $arrayOfPortrait[$portrait]['firstname'] ?></p>
+                    <p><img src="<?= $arrayOfPortrait[$portrait]['portrait'] ?>" alt="Photo de <?= $arrayPortrait[$portrait]['name'] ?> <?= $arrayPortrait[$portrait]['firstname'] ?>" width="300"></p>
                 </div>
                 <?php
-                if( $arrayOfPortrait[$i]['firstname'] != 'Racine' ){
+                // On mets un hr sauf pour Raçine (le dernier)
+                if( $arrayOfPortrait[$portrait]['firstname'] != 'Racine' ){
                 ?>
                         <hr class="w-75 my-5">
     <?php

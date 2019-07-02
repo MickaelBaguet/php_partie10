@@ -1,200 +1,198 @@
+<?php
+    include 'formValidation.php';
+    include 'country-list-array.php';
+?>
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
-<head>
-  <meta charset="utf-8" />
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-  <title>TP 1</title>
-  <style>
-      .container-fluid{
-          margin: 0;
-          padding: 0;
-      }
-      .error {color: #FF0000;}
-  </style>
-</head>
-<body>
-  <div class="container-fluid">
-    <div class="jumbotron jumbotron-fluid text-center">
-      <div class="container">
-        <h1 class="display-3">TP 1 - PHP</h1>
-        <h2>Partie 10</h2>
-        <p class="lead">Faire une page pour enregistrer un futur apprenant.</p>
-        <a href="../index.php" class="btn btn-primary">Retour</a>
-      </div>
-    </div>
-    <?php
-        // Pattern de test :
-        // $stringPattern sera utilisé pour le firstName, lastName, countryOfBirth, nationality
-        $accentedCharacters = 'àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ';
-        $stringPattern = '/^[A-ZÔÖÀÉÈÎÏ]{1}[a-zA-ZéèôöîïçÉÈÎÏ \'-]+([-\'\s][a-zA-ZéèôöîïçÉÈÎÏ \'-][a-zéèôöîïç \']+)?$/';
-        $emailPattern = '/^[^\W][a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\@[a-zA-Z0-9_]+(\.[a-zA-Z0-9_]+)*\.[a-zA-Z]{2,4}$/';
-        $datePattern = '/([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))/';
-        $phonePattern = '/^[0][0-9]{9}$/';
-        $idPoleEmploiPattern = '/^[0-9]{7}[A-Z]{1}$/';
-        $urlPattern = '/^https:\/\/codecombat\.com\/user\/[a-z0-9][a-z0-9_-]*$/' ;
-        $addressPattern = '/^[a-zA-Z0-9][a-zA-Z'.$accentedCharacters.'0-9 \'-]*$/';
-        $numberPattern = '/^[0-9]+$/';
-        $degreePattern = '/^[1-2-3-4]{1}$/';
-    ?>
-    <form class="justify-content-center row" action="index.php" method="get">
-        <?php
-            // !preg_match ( string $pattern , string $subject)
-            if (!preg_match($stringPattern, $_GET['lastName']) || !preg_match($stringPattern, $_GET['firstName']) 
-                || !preg_match($datePattern, $_GET['dateOfBirth']) || !preg_match($stringPattern, $_GET['countryOfBirth'])
-                || !preg_match($stringPattern, $_GET['nationality']) || !preg_match($addressPattern, $_GET['address'])
-                || !preg_match($emailPattern, $_GET['email']) || !preg_match($phonePattern, $_GET['phone']) 
-                || !preg_match($degreePattern, $_GET['degree']) || !preg_match($idPoleEmploiPattern, $_GET['idPoleEmploi']) 
-                || !preg_match($numberPattern, $_GET['numberBadge']) || !preg_match($urlPattern, $_GET['linkCodeAc'])) {            
-        ?>
-        <table class="justify-content-center text-center table col-10">
-            <tr>
-                <td colspan="2"><span class="error">*</span> : champ obligatoire</td>
-            </tr>
-            <tr>
-                <td class=""><label for="lastName">Nom <span class="error">* <?= !empty($_GET) && (preg_match($stringPattern, $_GET['lastName']) == false) ? 'Nom invalide !' : '' ;?></span></label></td>
-                <td><input type="text" name="lastName" placeholder="Dupont" value="<?= $_GET['lastName'] ?>"></td>
-            </tr>
-            <tr>
-                <td><label for="firstName">Prénom <span class="error">* <?= !empty($_GET) && (preg_match($stringPattern, $_GET['firstName']) == false) ? 'Prénom invalide !' : '' ;?></span></label></td>
-                <td><input type="text" name="firstName" placeholder="Jean" value="<?= $_GET['firstName'] ?>"></td>
-            </tr>
-            <tr>
-                <td><label for="dateOfBirth">Date de naissance <span class="error">* <?= !empty($_GET) && (preg_match($datePattern, $_GET['dateOfBirth']) == false) ? 'Date de naissance invalide !' : '' ;?></span></label></td>
-                <td><input type="date" name="dateOfBirth" value="<?= $_GET['dateOfBirth'] ?>"></td>
-            </tr>
-            <tr>
-                <td><label for="countryOfBirth">Pays de naissance <span class="error">* <?= !empty($_GET) && (preg_match($stringPattern, $_GET['countryOfBirth']) == false) ? 'Nom de pays invalide !' : '' ;?></span></label></td>
-                <td><input type="text" name="countryOfBirth" placeholder="France" value="<?= $_GET['countryOfBirth'] ?>"></td>
-            </tr>
-            <tr>
-                <td><label for="nationality">Nationalité <span class="error">* <?= !empty($_GET) && (preg_match($stringPattern, $_GET['nationality']) == false) ? 'Nationalité invalide !' : '' ;?></span></label></td>
-                <td><input type="text" name="nationality" placeholder="Français" value="<?= $_GET['nationality'] ?>"></td>
-            </tr>
-            <tr>
-                <td><label for="address">Adresse <span class="error">* <?= !empty($_GET) && (preg_match($addressPattern, $_GET['address']) == false) ? 'Adresse invalide !' : '' ;?></span></label></td>
-                <td><input type="text" name="address" placeholder="10 rue d'en haut" value="<?= $_GET['address'] ?>"></td>
-            </tr>
-            <tr>
-                <td><label for="email">Email <span class="error">* <?= !empty($_GET) && (preg_match($emailPattern, $_GET['email']) == false) ? 'Email invalide !' : '' ;?></span></label></td>
-                <td><input type="email" name="email" placeholder="adressemail@hebergeur.fr" value="<?= $_GET['email'] ?>"></td>
-            </tr>
-            <tr>
-                <td><label for="phone">Téléphone <span class="error">* <?= !empty($_GET) && (preg_match($phonePattern, $_GET['phone']) == false) ? 'Téléphone invalide !' : '' ;?></span></label></td>
-                <td><input type="tel" name="phone" placeholder="0612345678" value="<?= $_GET['phone'] ?>"></td>
-            </tr>
-            <tr>
-                <td class="" colspan="2">
-                    <p>Plus haut diplôme : <span class="error">* <?= !empty($_GET) && (preg_match($degreePattern, $_GET['degree']) == false) ? 'Diplome invalide !' : '' ;?></span></p>
-                </td>
-                <td>
-                    <tr>
-                        <td><input type="radio" id="none" name="degree" value="0"></td>
-                        <td><label for="Pas de diplome">Pas de diplome</label></td>
-                    </tr>
-                    <tr>
-                        <td><input type="radio" id="bac" name="degree" value ="1"></td>
-                        <td><label for="bac">Bac</label></td>
-                    </tr>
-                    <tr>
-                        <td><input type="radio" id="bac2" name="degree" value="2"></td>
-                        <td><label for="bac2">Bac +2</label></td>
-                    </tr>
-                    <tr>
-                        <td><input type="radio" id="bac3" name="degree" value="3"></td>
-                        <td><label for="bac3">Bac +3</label></td>
-                    </tr>
-                    <tr>
-                        <td><input type="radio" id="bac5Plus" name="degree" value="4"></td>
-                        <td><label for="bac5Plus">Bac +5 et supérieur</label></td>
-                    </tr>
-                </td>
-            </tr>
-            <tr>
-                <td><label for="idPoleEmploi">Numéro pôle emploi <span class="error">* <?= !empty($_GET) && (preg_match($idPoleEmploiPattern, $_GET['idPoleEmploi']) == false) ? 'Numéro Pole Emploi invalide !' : '' ;?></span></label></td>
-                <td><input type="text" name="idPoleEmploi" placeholder="0123456A" value="<?= $_GET['idPoleEmploi'] ?>"></td>
-            </tr>
-            <tr>
-                <td><label for="numberBadge">Nombre de badge <span class="error">* <?= !empty($_GET) && (preg_match($numberPattern, $_GET['numberBadge']) == false) ? 'Nombre badge invalide !' : '' ;?></span></label></td>
-                <td><input type="text" name="numberBadge" placeholder="1, 2, 3, ..." value="<?= $_GET['numberBadge'] ?>"></td>
-            </tr>
-            <tr>
-                <td><label for="linkCodeAc">Liens codecademy <span class="error">* <?= !empty($_GET) && (preg_match($urlPattern, $_GET['linkCodeAc']) == false) ? 'Lien Code Combat invalide !' : '' ;?></span></label></td>
-                <td><input type="text" name="linkCodeAc" placeholder="https://codecombat.com/user/userName" value="<?= $_GET['linkCodeAc'] ?>"></td>
-            </tr>
-            <tr>
-                <td><label for="heroOrNot">Si vous étiez un super héros/une super héroïne, qui seriez-vous et pourquoi ? <span class="error">* <?= !empty($_GET) && ($_GET['heroOrNot'] == '') ? 'Veuillez remplir le champ héro !' : '' ;?></span></label></td>
-                <td><textarea name="heroOrNot" id="heroOrNot" cols="50" rows="3" value="<?= $_GET['heroOrNot'] ?>"></textarea></td>
-            </tr>
-            <tr>
-                <td><label for="historyHack">Racontez-nous un de vos "hacks" (pas forcément technique ou informatique) <span class="error">* <?= !empty($_GET) && ($_GET['historyHack'] == '') ? 'Veuillez remplir le champ hack !' : '' ;?></span></label></td>
-                <td><textarea name="historyHack" id="historyHack" cols="50" rows="3" value="<?= $_GET['historyHack'] ?>"></textarea></td>
-            </tr>
-            <tr>
-                <td><label for="expInfo">Avez vous déjà eu une expérience avec la programmation et/ou l'informatique avant de remplir ce formulaire ? <span class="error">* <?= !empty($_GET) && ($_GET['expInfo'] == '') ? 'Veuillez remplir le champ expérience !' : '' ;?></span></label></td>
-                <td><textarea name="expInfo" id="expInfo" cols="50" rows="3" value="<?= $_GET['expInfo'] ?>"></textarea></td>
-            </tr>
-            <tr class="">
-                <td colspan="2" class="">
-                    <input class="btn btn-outline-secondary btn-lg btn-block offset-8 w-25" type="submit" value="OK">
-                </td>
-            </tr>
-        </table>
-        <?php
-            } else {
-        ?>
-        <div class="d-block justify-content-start">
-            <?php
-                switch ($_GET['degree']) {
-                    case 0:
-                        $nameDegree = 'Vous n\'avez pas de diplôme';
-                        break;
-                    case 1:
-                        $nameDegree = 'Vous avez un Bac';
-                        break;
-                    case 2:
-                        $nameDegree = 'Vous avez un Bac+2';
-                        break;
-                    case 3:
-                        $nameDegree = 'Vous avez un Bac+3';
-                        break;
-                    case 4:
-                        $nameDegree = 'Vous avez un Bac+5 ou supérieur';
-                        break;
-                }
-                $dateDDMMYYY = new DateTime($_GET['dateOfBirth']);
-            ?>
-            <p>Bienvenue parmis nous <?= $_GET['firstName'] ?> <?= $_GET['lastName'] ?>.</p>
-            <p>Voici vos informations :</p>
-            <ul>
-                <li>Vous êtes né(e) en <?= $_GET['countryOfBirth'] ?> le <?= $dateDDMMYYY->format('d/m/Y'); ?> et vous êtes <?= $_GET['nationality'] ?>.</li>
-                <li>Vos coordonées :</li>
-                <ul>
-                    <li>Adresse : <?= $_GET['address'] ?></li>
-                    <li>Mail : <?= $_GET['email'] ?></li>
-                    <li>Téléphone : <?= $_GET['phone'] ?></li>
-                </ul>
-                <li><?= $nameDegree ?></li>
-                <li>Votre numéro Pôle-Emploi : <?= $_GET['idPoleEmploi'] ?></li>
-                <li>Vous possèdez <?= $_GET['numberBadge'] ?> badge(s) en tout, c'est bien !</li>
-                <li><a href="<?= $_GET['linkCodeAc'] ?>">Profil CodeCombat</a></li>
-                <li>Votre personnage préféré et pourquoi :</li>
-                <ul>
-                    <li><?= $_GET['heroOrNot'] ?></li>
-                </ul>
-                <li>L'un de vos 'hacks' :</li>
-                <ul>
-                    <li><?= $_GET['historyHack'] ?></li>
-                </ul>
-                <li>Votre expérience dans la programmation et/ou l'informatique :</li>
-                <ul>
-                    <li><?= $_GET['expInfo'] ?></li>
-                </ul>
-            </ul>
+    <head>
+        <meta charset="utf-8" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.3.1/sketchy/bootstrap.min.css">
+        <title>TP 1</title>
+        <style>
+            .alert{
+                padding : 0.25rem 1.5rem !important;
+                margin-left: 1em;
+            }
+            .text-danger{
+                margin-left: 10px;
+            }
+            li{
+                padding: 3px 0;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="jumbotron jumbotron-fluid text-center">
+                <div class="container">
+                    <h1 class="display-3">TP 1 - PHP</h1>
+                    <h2>Partie 10</h2>
+                    <p class="lead">Faire une page pour enregistrer un futur apprenant.</p>
+                    <a href="../index.php" class="btn btn-primary">Retour</a>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <?php if (!$validation) { ?>
+                        <form action="index.php" method="post">
+                            <fieldset>
+                                <legend>Formulaire d'inscription</legend>
+                                <div class="form-group">
+                                    <label for="lastName">Nom</label>
+                                    <input type="text" class="form-control <?= isset($arrayOfErrors['lastName']) ? 'is-invalid' : '' ?>" name="lastName" placeholder="Dupont" value="<?= $_POST['lastName'] ?? '' ?>">
+                                    <span class="<?= isset($arrayOfErrors['lastName']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['lastName'] ?? '' ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="firstName">Prénom</label>
+                                    <input type="text" class="form-control <?= isset($arrayOfErrors['firstName']) ? 'is-invalid' : '' ?>" name="firstName" placeholder="Pierre" value="<?= $_POST['firstName'] ?? '' ?>">
+                                    <span class="<?= isset($arrayOfErrors['firstName']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['firstName'] ?? '' ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="dateOfBirth">Date de naissance</label>
+                                    <input type="date" class="form-control <?= isset($arrayOfErrors['dateOfBirth']) ? 'is-invalid' : '' ?>" name="dateOfBirth" value="<?= $_POST['dateOfBirth'] ?? '' ?>">
+                                    <span class="<?= isset($arrayOfErrors['dateOfBirth']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['dateOfBirth'] ?? '' ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="countryOfBirth">Pays de naissance</label>
+                                    <select class="form-control <?= isset($arrayOfErrors['countryOfBirth']) ? 'is-invalid' : '' ?>" name="countryOfBirth" id="countryOfBirth">
+                                        <option disabled selected>Selectionnez un pays</option>
+                                        <?php foreach ($countryList as $country): ?>
+                                            <option value="<?= $country ?>" <?= (isset($_POST['countryOfBirth']) && $_POST['countryOfBirth'] == $country) ? 'selected' : '' ?>><?= $country ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                    <span class="<?= isset($arrayOfErrors['countryOfBirth']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['countryOfBirth'] ?? '' ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nationality">Nationalité</label>
+                                    <select class="form-control <?= isset($arrayOfErrors['nationality']) ? 'is-invalid' : '' ?>" name="nationality" id="nationality">
+                                        <option disabled <?= (!isset($_POST['nationality']) || $_POST['nationality'] == '') ? 'selected' : '' ?>>Selectionnez un pays</option>
+                                        <?php foreach ($countryList as $country): ?>
+                                            <option value="<?= $country ?>" <?= (isset($_POST['nationality']) && $_POST['nationality'] == $country) ? 'selected' : '' ?>><?= $country ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                    <span class="<?= isset($arrayOfErrors['nationality']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['nationality'] ?? '' ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">Adresse</label>
+                                    <input type="text" class="form-control <?= isset($arrayOfErrors['address']) ? 'is-invalid' : '' ?>" name="address" placeholder="19 rue du haut" value="<?= $_POST['address'] ?? '' ?>">
+                                    <span class="<?= isset($arrayOfErrors['address']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['address'] ?? '' ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="email">Email</label>
+                                    <input type="text" class="form-control <?= isset($arrayOfErrors['email']) ? 'is-invalid' : '' ?>" name="email" placeholder="exemple@hebergeur.fr" value="<?= $_POST['email'] ?? '' ?>">
+                                    <span class="<?= isset($arrayOfErrors['email']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['email'] ?? '' ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">Téléphone</label>
+                                    <input type="text" class="form-control <?= isset($arrayOfErrors['phone']) ? 'is-invalid' : '' ?>" name="phone" placeholder="0612345678" value="<?= $_POST['phone'] ?? '' ?>">
+                                    <span class="<?= isset($arrayOfErrors['phone']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['phone'] ?? '' ?></span>
+                                </div>
+                                <fieldset class="form-group">
+                                    <legend>Votre niveau d'étude</legend>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="degree" id="optionsRadios1" value="0" <?= ($_POST && $_POST['degree'] === '0') ? 'checked' : '' ?>>
+                                            Pas de diplôme
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="degree" id="optionsRadios2" value="1" <?= ($_POST['degree'] == 1) ? 'checked' : '' ?>>
+                                            Bac
+                                        </label>
+                                    </div>
+                                    <div class="form-check disabled">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="degree" id="optionsRadios3" value="2" <?= ($_POST['degree'] == 2) ? 'checked' : '' ?>>
+                                            Bac +2
+                                        </label>
+                                    </div>
+                                    <div class="form-check disabled">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="degree" id="optionsRadios4" value="3" <?= ($_POST['degree'] == 3) ? 'checked' : '' ?>>
+                                            Bac +3
+                                        </label>
+                                    </div>
+                                    <div class="form-check disabled">
+                                        <label class="form-check-label">
+                                            <input type="radio" class="form-check-input" name="degree" id="optionsRadios5" value="4" <?= ($_POST['degree'] == 4) ? 'checked' : '' ?>>
+                                            Bac +5 et plus
+                                        </label>
+                                    </div>
+                                    <span class="<?= isset($arrayOfErrors['degree']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['degree'] ?? '' ?></span>
+                                </fieldset>
+                                <div class="form-group">
+                                    <label for="idPoleEmploi">Numéro Pôle Emploi</label>
+                                    <input type="text" class="form-control <?= isset($arrayOfErrors['idPoleEmploi']) ? 'is-invalid' : '' ?>" name="idPoleEmploi" placeholder="0123456A" value="<?= $_POST['idPoleEmploi'] ?? '' ?>">
+                                    <span class="<?= isset($arrayOfErrors['idPoleEmploi']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['idPoleEmploi'] ?? '' ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="numberBadge">Nombre de badge</label>
+                                    <input type="text" class="form-control <?= isset($arrayOfErrors['numberBadge']) ? 'is-invalid' : '' ?>" name="numberBadge" placeholder="1, 2, 3, ..." value="<?= $_POST['numberBadge'] ?? '' ?>">
+                                    <span class="<?= isset($arrayOfErrors['numberBadge']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['numberBadge'] ?? '' ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="linkCodeAc">Liens codecademy</label>
+                                    <input type="text" class="form-control <?= isset($arrayOfErrors['linkCodeAc']) ? 'is-invalid' : '' ?>" name="likeCodeAc" placeholder="https://codecademy.com/user/username" value="<?= $_POST['linkCodeAc'] ?? '' ?>">
+                                    <span class="<?= isset($arrayOfErrors['linkCodeAc']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['linkCodeAc'] ?? '' ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="heroOrNot">Si vous étiez un super héros/une super héroïne, qui seriez-vous et pourquoi?</label>
+                                    <textarea class="form-control <?= isset($arrayOfErrors['heroOrNot']) ? 'is-invalid' : '' ?>" name="heroOrNot" rows="3"><?= $_POST['heroOrNot'] ?? '' ?></textarea>
+                                    <span class="<?= isset($arrayOfErrors['heroOrNot']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['heroOrNot'] ?? '' ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="historyHack">Racontez-nous un de vos "hacks" (pas forcément technique ou informatique)</label>
+                                    <textarea class="form-control <?= isset($arrayOfErrors['historyHack']) ? 'is-invalid' : '' ?>" name="historyHack" rows="3"><?= $_POST['historyHack'] ?? '' ?></textarea>
+                                    <span class="<?= isset($arrayOfErrors['historyHack']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['historyHack'] ?? '' ?></span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="expInfo">Avez vous déjà eu une expérience avec la programmation et/ou l'informatique avant de remplir ce formulaire ?</label>
+                                    <textarea class="form-control <?= isset($arrayOfErrors['expInfo']) ? 'is-invalid' : '' ?>" name="expInfo" rows="3"><?= $_POST['expInfo'] ?? '' ?></textarea>
+                                    <span class="<?= isset($arrayOfErrors['expInfo']) ? 'text-danger' : '' ?>"><?= $arrayOfErrors['expInfo'] ?? '' ?></span>
+                                </div>
+                                <button type="submit" class="btn btn-outline-primary">Envoyer</button>
+                            </fieldset>
+                        </form>
+                        <div class="">
+                            <?php
+                        } else {
+                            // On récupère la date de naissance afin de l'afficher dans un format dd/mm/yyyy
+                            $dateDDMMYYY = new DateTime($_POST['dateOfBirth']);
+                            ?>
+                            <p>Bienvenue parmis nous <?= $_POST['firstName'] ?> <?= $_POST['lastName'] ?>.</p>
+                            <p>Voici vos informations :</p>
+                            <ul>
+                                <li>Vous êtes né(e) en <?= $_POST['countryOfBirth'] ?> le <?= $dateDDMMYYY->format('d/m/Y'); ?> et vous êtes <?= $_POST['nationality'] ?>.</li>
+                                <li>Vos coordonées :</li>
+                                <ul>
+                                    <li>Adresse : <?= $_POST['address'] ?></li>
+                                    <li>Mail : <?= $_POST['email'] ?></li>
+                                    <li>Téléphone : <?= $_POST['phone'] ?></li>
+                                </ul>
+                                <li><?= $arrayDegree[$_POST['degree']] ?></li>
+                                <li>Votre numéro Pôle-Emploi : <?= $_POST['idPoleEmploi'] ?></li>
+                                <li>Vous possèdez <?= $_POST['numberBadge'] ?> badge(s) en tout, c'est bien !</li>
+                                <li><a href="<?= $_POST['linkCodeAc'] ?>">Profil CodeAcademy</a></li>
+                                <li>Votre personnage préféré et pourquoi :</li>
+                                <ul>
+                                    <li><?= htmlspecialchars($_POST['heroOrNot']) ?></li>
+                                </ul>
+                                <li>L'un de vos 'hacks' :</li>
+                                <ul>
+                                    <li><?= htmlspecialchars($_POST['historyHack']) ?></li>
+                                </ul>
+                                <li>Votre expérience dans la programmation et/ou l'informatique :</li>
+                                <ul>
+                                    <li><?= htmlspecialchars($_POST['expInfo']) ?></li>
+                                </ul>
+                            </ul>
+                        </div>
+                        <?php
+                    }
+                    ?>
+                </div>
+            </div>
         </div>
-        <?php
-        }
-        ?>
-    </form>
-  </div>
-</body>
+    </body>
 </html>
